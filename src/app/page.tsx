@@ -22,7 +22,7 @@ export default function Home() {
         group.name = 'Model';
 
         // Add svg paths to model group
-        paths.forEach((element) => {
+        paths.forEach((element, i) => {
           const material = getMaterial(element, data.xml);
           const shapes = SVGLoader.createShapes(element);
           for (const element of shapes) {
@@ -36,7 +36,7 @@ export default function Home() {
               curveSegments: 30
             });
             // TODO: Custom layer order
-            geometry.applyMatrix4(new Matrix4().makeScale(1, -1, 1));
+            geometry.applyMatrix4(new Matrix4().makeScale(1, -1, 1 + i * 0.001));
 
             const mesh = new Mesh(geometry, material);
             mesh.castShadow = true;
