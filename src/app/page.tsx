@@ -1,11 +1,12 @@
 'use client';
 
-import DownloadButton from '@/app/components/DownloadButton';
 import { OrbitControls, Stage } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { useEffect, useState } from 'react';
 import { Color, DoubleSide, ExtrudeGeometry, Group, Material, Matrix4, Mesh, MeshPhysicalMaterial, Object3D } from 'three';
 import { SVGLoader, SVGResultPaths } from 'three/addons/loaders/SVGLoader.js';
+import DownloadButton from './components/DownloadButton';
+import UploadButton from './components/UploadButton';
 
 export default function Home() {
   const loader = new SVGLoader();
@@ -50,7 +51,7 @@ export default function Home() {
     }
   }, [svg]);
 
-  if (!model) return <SvgInput setSVG={setSVG} />;
+  if (!model) return <UploadButton setSVG={setSVG} />;
   return (
     <>
       <Canvas shadows>
@@ -62,18 +63,6 @@ export default function Home() {
 
       <DownloadButton model={model} />
     </>
-  );
-}
-function SvgInput({ setSVG }: Readonly<{ setSVG: any }>) {
-  const onFileChange = (e: any) => {
-    if (!e.target.files[0]) return setSVG();
-    setSVG(URL.createObjectURL(e.target.files[0]));
-  };
-
-  return (
-    <div>
-      <input type='file' onChange={onFileChange} accept='.svg' />
-    </div>
   );
 }
 
