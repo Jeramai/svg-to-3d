@@ -1,5 +1,6 @@
 'use client';
 
+import DownloadButton from '@/app/components/DownloadButton';
 import { OrbitControls, Stage } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { useEffect, useState } from 'react';
@@ -17,8 +18,10 @@ export default function Home() {
       loader.load(svg, function (data) {
         const paths = data.paths;
         const group = new Group();
+        group.name = 'Model';
 
-        paths.forEach((element, i) => {
+        // Add svg paths to model group
+        paths.forEach((element) => {
           const material = getMaterial(element, data.xml);
           const shapes = SVGLoader.createShapes(element);
           for (const element of shapes) {
@@ -32,7 +35,7 @@ export default function Home() {
               curveSegments: 30
             });
             // TODO: Custom layer order
-            geometry.applyMatrix4(new Matrix4().makeScale(1, -1, 1 - i * 0.001));
+            geometry.applyMatrix4(new Matrix4().makeScale(1, -1, 1));
 
             const mesh = new Mesh(geometry, material);
             mesh.castShadow = true;
@@ -40,21 +43,25 @@ export default function Home() {
 
             group.add(mesh);
           }
-
-          setModel(group);
         });
+
+        setModel(group);
       });
     }
   }, [svg]);
 
   if (!model) return <SvgInput setSVG={setSVG} />;
   return (
-    <Canvas shadows>
-      <Stage shadows>
-        <primitive object={model} />
-      </Stage>
-      <OrbitControls />
-    </Canvas>
+    <>
+      <Canvas shadows>
+        <Stage shadows adjustCamera>
+          <primitive object={model} />
+        </Stage>
+        <OrbitControls />
+      </Canvas>
+
+      <DownloadButton model={model} />
+    </>
   );
 }
 function SvgInput({ setSVG }: Readonly<{ setSVG: any }>) {
@@ -101,5 +108,6 @@ function getMaterial(path: SVGResultPaths, xml: XMLDocument): Material {
   }
 
   const opacity = path?.userData?.style?.opacity ?? 1;
-  return new MeshPhysicalMaterial({ color, side: DoubleSide, transparent: true, opacity });
+  const depthTest = opacity === 1;
+  return new MeshPhysicalMaterial({ color, side: DoubleSide, transparent: true, opacity, depthTest });
 }
