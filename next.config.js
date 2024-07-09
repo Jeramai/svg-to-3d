@@ -1,6 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  basePath: "/svg-to-3d",
+  basePath: process.env.NODE_ENV === "production" ? "/svg-to-3d" : undefined,
   output: "export",
   reactStrictMode: true,
 };

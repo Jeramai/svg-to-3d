@@ -27,13 +27,16 @@ export default function DownloadButton({ model, name = 'svg-to-3d' }: Readonly<{
 
   return (
     <div className='fixed bottom-10 w-full flex justify-center items-center'>
-      <button className='rounded-full bg-gray-800 hover:bg-gray-900 px-5 py-2 duration-300' onClick={download}>
+      <button className='rounded-full bg-gray-800 hover:bg-gray-900 px-5 py-2 duration-300' onClick={download} disabled={!model}>
         Download
       </button>
       <span className='mx-3'>{' | '}</span>
       <form action='https://www.paypal.com/donate' method='post' target='_top'>
         <input type='hidden' name='hosted_button_id' value='DC2N4CH8AJCYW' />
-        <button className='rounded-full bg-[#ffc439] hover:bg-[#9e7e34] text-black hover:text-white font-semibold px-5 py-2 duration-300'>
+        <button
+          className='rounded-full bg-[#ffc439] hover:bg-[#9e7e34] text-black hover:text-white font-semibold px-5 py-2 duration-300'
+          disabled={!model}
+        >
           Donate
         </button>
       </form>

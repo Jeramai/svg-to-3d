@@ -1,17 +1,22 @@
 'use client';
 
+import { ISettings } from '@/types/ISettings';
 import { OrbitControls, Stage } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { useEffect, useState } from 'react';
 import { Color, DoubleSide, ExtrudeGeometry, Group, Material, Matrix4, Mesh, MeshPhysicalMaterial, Object3D } from 'three';
 import { SVGLoader, SVGResultPaths } from 'three/addons/loaders/SVGLoader.js';
 import DownloadButton from './components/DownloadButton';
+import Settings from './components/Settings';
 import UploadButton from './components/UploadButton';
 
 export default function Home() {
   const loader = new SVGLoader();
   const [svg, setSVG] = useState<any>();
   const [model, setModel] = useState<Object3D>();
+  const [settings, setSettings] = useState<ISettings>({
+    backgroundColor: '#000000'
+  });
 
   // Turn SVG into model
   useEffect(() => {
@@ -59,15 +64,18 @@ export default function Home() {
         <Stage shadows adjustCamera>
           <primitive object={model} />
         </Stage>
+
         <OrbitControls />
+        <color attach='background' args={[settings.backgroundColor ?? 0x000000]} />
       </Canvas>
 
       <DownloadButton model={model} />
+      <Settings settings={settings} setSettings={setSettings} />
     </>
   );
 }
 
-function getMaterial(path: SVGResultPaths, xml: XMLDocument): Material {
+function getMaterial(path: SVGResultPaths, xml: XMLDocument, settings?: Object): Material {
   let color = path.color;
 
   // When "currentColor", default to black
