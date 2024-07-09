@@ -5,7 +5,7 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: '3D SVG generator',
+  title: 'SVG to 3D generator',
   description: 'Create a 3D model from any SVG image'
 };
 

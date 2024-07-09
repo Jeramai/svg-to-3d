@@ -36,11 +36,12 @@ export default function Home() {
               curveSegments: 30
             });
             // TODO: Custom layer order
-            geometry.applyMatrix4(new Matrix4().makeScale(1, -1, 1 + i * 0.001));
+            geometry.applyMatrix4(new Matrix4().makeScale(1, -1, 1));
 
             const mesh = new Mesh(geometry, material);
             mesh.castShadow = true;
             mesh.receiveShadow = true;
+            mesh.position.z = i * 0.005;
 
             group.add(mesh);
           }
