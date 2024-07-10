@@ -1,3 +1,3 @@
 export interface ISettings {
-  backgroundColor: string;
+  depth: number;
 }

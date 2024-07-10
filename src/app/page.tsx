@@ -14,8 +14,10 @@ export default function Home() {
   const loader = new SVGLoader();
   const [svg, setSVG] = useState<any>();
   const [model, setModel] = useState<Object3D>();
+
+  const [background, setBackground] = useState<string>('#000000');
   const [settings, setSettings] = useState<ISettings>({
-    backgroundColor: '#000000'
+    depth: 10
   });
 
   const restart = () => {
@@ -26,6 +28,8 @@ export default function Home() {
   // Turn SVG into model
   useEffect(() => {
     if (svg) {
+      const depth = Number.isNaN(settings?.depth) ? 0 : settings?.depth;
+
       loader.load(svg, function (data) {
         const paths = data.paths;
         const group = new Group();
@@ -38,7 +42,7 @@ export default function Home() {
           for (const element of shapes) {
             const shape = element;
             const geometry = new ExtrudeGeometry(shape, {
-              depth: 10,
+              depth,
               bevelEnabled: true,
               bevelThickness: 0.01,
               bevelSize: 0.1,
@@ -60,7 +64,7 @@ export default function Home() {
         setModel(group);
       });
     }
-  }, [svg]);
+  }, [svg, settings]);
 
   if (!model) {
     return (
@@ -80,11 +84,11 @@ export default function Home() {
         </Stage>
 
         <OrbitControls />
-        <color attach='background' args={[settings.backgroundColor ?? 0x000000]} />
+        <color attach='background' args={[background ?? 0x000000]} />
       </Canvas>
 
       <Buttons model={model} restart={restart} />
-      <Settings settings={settings} setSettings={setSettings} />
+      <Settings settings={settings} setSettings={setSettings} background={background} setBackground={setBackground} />
     </>
   );
 }

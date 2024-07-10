@@ -3,7 +3,12 @@ import { ISettings } from '@/types/ISettings';
 import Image from 'next/image';
 import { Dispatch, useState } from 'react';
 
-export default function Settings({ settings, setSettings }: Readonly<{ settings: ISettings; setSettings: Dispatch<ISettings> }>) {
+export default function Settings({
+  settings,
+  setSettings,
+  background,
+  setBackground
+}: Readonly<{ settings: ISettings; setSettings: Dispatch<ISettings>; background: string; setBackground: Dispatch<string> }>) {
   const [showSettingsModal, setShowSettingsModal] = useState(false);
 
   const toggleSettings = () => setShowSettingsModal((s) => !s);
@@ -21,28 +26,49 @@ export default function Settings({ settings, setSettings }: Readonly<{ settings:
 
       {/* Settings card */}
       <div
-        className={`fixed bottom-1 right-0 ${showSettingsModal ? 'translate-x-0' : 'translate-x-full'} duration-300
-          w-full max-w-[450px] bg-zinc-900 text-gray-200 rounded-l-3xl h-[80vh] p-5`}
+        className={`fixed top-24 right-0 ${showSettingsModal ? 'translate-x-0' : 'translate-x-full'} duration-300
+          max-w-[450px] bg-zinc-900 text-gray-200 rounded-l-3xl p-5`}
       >
-        <SettingsFields settings={settings} setSettings={setSettings} />
+        <SettingsFields settings={settings} setSettings={setSettings} background={background} setBackground={setBackground} />
       </div>
     </>
   );
 }
-function SettingsFields({ settings, setSettings }: Readonly<{ settings: ISettings; setSettings: Dispatch<any> }>) {
+function SettingsFields({
+  settings,
+  setSettings,
+  background,
+  setBackground
+}: Readonly<{ settings: ISettings; setSettings: Dispatch<any>; background: string; setBackground: Dispatch<string> }>) {
   return (
-    <div>
-      <label className='font-semibold' htmlFor='backgroundColor'>
-        Background Color
-      </label>
-      <div className='mt-2'>
-        <input
-          id='backgroundColor'
-          className='rounded-md bg-zinc-700 px-1 cursor-pointer'
-          type='color'
-          value={settings.backgroundColor || 0x000000}
-          onChange={(e) => setSettings((s: ISettings) => ({ ...s, backgroundColor: e.target.value } as ISettings))}
-        />
+    <div className='flex flex-col gap-5'>
+      <div>
+        <label className='font-semibold' htmlFor='backgroundColor'>
+          Background Color
+        </label>
+        <div className='mt-2'>
+          <input
+            id='backgroundColor'
+            className='rounded-md bg-zinc-700 px-1 cursor-pointer'
+            type='color'
+            value={background || 0x000000}
+            onChange={(e) => setBackground(e.target.value)}
+          />
+        </div>
+      </div>
+      <div>
+        <label className='font-semibold' htmlFor='modelDepth'>
+          3D depth
+        </label>
+        <div className='mt-1'>
+          <input
+            id='modelDepth'
+            className='rounded-md bg-zinc-700 px-1 cursor-pointer'
+            type='number'
+            value={settings?.depth || 0}
+            onChange={(e) => setSettings((s: ISettings) => ({ ...s, depth: e.target.valueAsNumber }))}
+          />
+        </div>
       </div>
     </div>
   );
