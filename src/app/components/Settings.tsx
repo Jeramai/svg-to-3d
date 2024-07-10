@@ -3,7 +3,7 @@ import { ISettings } from '@/types/ISettings';
 import Image from 'next/image';
 import { Dispatch, useState } from 'react';
 
-export default function Settings({ settings, setSettings }: { settings: ISettings; setSettings: Dispatch<ISettings> }) {
+export default function Settings({ settings, setSettings }: Readonly<{ settings: ISettings; setSettings: Dispatch<ISettings> }>) {
   const [showSettingsModal, setShowSettingsModal] = useState(false);
 
   const toggleSettings = () => setShowSettingsModal((s) => !s);
@@ -29,7 +29,7 @@ export default function Settings({ settings, setSettings }: { settings: ISetting
     </>
   );
 }
-function SettingsFields({ settings, setSettings }: { settings: ISettings; setSettings: Dispatch<any> }) {
+function SettingsFields({ settings, setSettings }: Readonly<{ settings: ISettings; setSettings: Dispatch<any> }>) {
   return (
     <div>
       <label className='font-semibold' htmlFor='backgroundColor'>

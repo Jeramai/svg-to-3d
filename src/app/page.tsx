@@ -6,9 +6,9 @@ import { Canvas } from '@react-three/fiber';
 import { useEffect, useState } from 'react';
 import { Color, DoubleSide, ExtrudeGeometry, Group, Material, Matrix4, Mesh, MeshPhysicalMaterial, Object3D } from 'three';
 import { SVGLoader, SVGResultPaths } from 'three/addons/loaders/SVGLoader.js';
-import DownloadButton from './components/DownloadButton';
+import Buttons from './components/Buttons';
 import Settings from './components/Settings';
-import UploadButton from './components/UploadButton';
+import UploadField from './components/UploadField';
 
 export default function Home() {
   const loader = new SVGLoader();
@@ -17,6 +17,11 @@ export default function Home() {
   const [settings, setSettings] = useState<ISettings>({
     backgroundColor: '#000000'
   });
+
+  const restart = () => {
+    setSVG(undefined);
+    setModel(undefined);
+  };
 
   // Turn SVG into model
   useEffect(() => {
@@ -63,7 +68,7 @@ export default function Home() {
         <div className='flex justify-center content-center p-10 pb-2 text-3xl'>
           <h1>Upload your SVG file to generate your 3D logo!</h1>
         </div>
-        <UploadButton setSVG={setSVG} />
+        <UploadField setSVG={setSVG} />
       </div>
     );
   }
@@ -78,7 +83,7 @@ export default function Home() {
         <color attach='background' args={[settings.backgroundColor ?? 0x000000]} />
       </Canvas>
 
-      <DownloadButton model={model} />
+      <Buttons model={model} restart={restart} />
       <Settings settings={settings} setSettings={setSettings} />
     </>
   );

@@ -2,7 +2,7 @@ import add from '@/../public/assets/plus-circle.svg';
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 
-export default function UploadButton({ setSVG }: Readonly<{ setSVG: any }>) {
+export default function UploadField({ setSVG }: Readonly<{ setSVG: any }>) {
   const timeoutId = useRef<NodeJS.Timeout>();
   const [isCorrectFileType, setIsCorrectFileType] = useState<boolean>(true);
 
