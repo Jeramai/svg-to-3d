@@ -57,7 +57,16 @@ export default function Home() {
     }
   }, [svg]);
 
-  if (!model) return <UploadButton setSVG={setSVG} />;
+  if (!model) {
+    return (
+      <div className='w-full h-full flex flex-col'>
+        <div className='flex justify-center content-center p-10 pb-2 text-3xl'>
+          <h1>Upload your SVG file to generate your 3D logo!</h1>
+        </div>
+        <UploadButton setSVG={setSVG} />
+      </div>
+    );
+  }
   return (
     <>
       <Canvas shadows>
