@@ -152,5 +152,6 @@ function getMaterial(path: SVGResultPaths, xml: XMLDocument, settings?: Object):
 
   const opacity = path?.userData?.style?.opacity ?? 1;
   const depthTest = opacity === 1;
-  return new MeshPhysicalMaterial({ color, side: DoubleSide, transparent: true, opacity, depthTest });
+  const transparent = opacity !== 1;
+  return new MeshPhysicalMaterial({ color, side: DoubleSide, transparent, opacity, depthTest });
 }
