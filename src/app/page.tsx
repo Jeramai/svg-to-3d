@@ -4,7 +4,19 @@ import { ISettings } from '@/types/ISettings';
 import { OrbitControls, Stage } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
 import { useEffect, useState } from 'react';
-import { Color, DoubleSide, ExtrudeGeometry, Group, Material, Matrix4, Mesh, MeshPhysicalMaterial, Object3D } from 'three';
+import {
+  Box3,
+  Color,
+  DoubleSide,
+  ExtrudeGeometry,
+  Group,
+  Material,
+  Matrix4,
+  Mesh,
+  MeshPhysicalMaterial,
+  Object3D,
+  Vector3
+} from 'three';
 import { SVGLoader, SVGResultPaths } from 'three/addons/loaders/SVGLoader.js';
 import Buttons from './components/Buttons';
 import Settings from './components/Settings';
@@ -60,6 +72,21 @@ export default function Home() {
             group.add(mesh);
           }
         });
+
+        // Create bounding box holder object
+        const box = new Box3();
+
+        // Scale group to be 1 meter in width
+        box.setFromObject(group);
+        const scale = 1 / (box.max.x - box.min.x);
+        group.scale.set(scale, scale, scale);
+
+        // Center the group
+        box.setFromObject(group);
+        const center = new Vector3();
+        box.getCenter(center);
+        group.position.sub(center);
+        // group.position.sub({ ...center, y: box.max.y + box.min.y });
 
         setModel(group);
       });
